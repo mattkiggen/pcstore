@@ -9,6 +9,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', require('./routes/users'));
+app.use('/api/products', require('./routes/products'));
 
 // Listen
 const PORT = process.env.PORT || 1337;
