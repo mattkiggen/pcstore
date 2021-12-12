@@ -35,7 +35,7 @@ function validateProduct(product) {
     description: Joi.string().min(3).max(5000).required(),
     price: Joi.number().required(),
     productCode: Joi.string().min(3).max(255),
-    category: Joi.string().min(3).max(255),
+    categoryId: Joi.number().required(),
     numberInStock: Joi.number(),
   });
   return schema.validate(product);

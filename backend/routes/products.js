@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
   const result = await createProduct(req.body);
   if (result.error)
     return res
-      .send(400)
+      .status(400)
       .json({ message: 'Error creating product', error: result.error });
 
   res.status(200).json(result.product);
