@@ -1,30 +1,18 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { create, getAll, getById } = require('../lib/data');
 const Joi = require('joi');
 
 async function createProduct(product) {
-  let result = {};
-  try {
-    result.product = await prisma.product.create({
-      data: product,
-    });
-  } catch (e) {
-    result.error = e;
-  } finally {
-    await prisma.$disconnect();
-  }
+  const result = await create('product', product);
   return result;
 }
 
 async function getAllProducts() {
-  let result = {};
-  try {
-    result.products = await prisma.product.findMany();
-  } catch (e) {
-    result.error = e;
-  } finally {
-    await prisma.$disconnect();
-  }
+  const result = await getAll('product', { include: { category: true } });
+  return result;
+}
+
+async function getProductById(id) {
+  const result = await getById('product', { where: { id } });
   return result;
 }
 
@@ -41,4 +29,9 @@ function validateProduct(product) {
   return schema.validate(product);
 }
 
-module.exports = { createProduct, validateProduct, getAllProducts };
+module.exports = {
+  createProduct,
+  validateProduct,
+  getAllProducts,
+  getProductById,
+};

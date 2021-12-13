@@ -1,18 +1,8 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { create } = require('../lib/data');
 const Joi = require('joi');
 
 async function createOrder(order) {
-  let result = {};
-  try {
-    result.order = await prisma.order.create({
-      data: order,
-    });
-  } catch (e) {
-    result.error = e;
-  } finally {
-    await prisma.$disconnect();
-  }
+  const result = await create('order', order);
   return result;
 }
 

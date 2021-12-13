@@ -1,19 +1,9 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { create } = require('../lib/data');
 const Joi = require('joi');
 
 // returns a result object that contains either the new user or an error object
 async function createUser(user) {
-  let result = {};
-  try {
-    result.user = await prisma.user.create({
-      data: user,
-    });
-  } catch (e) {
-    result.error = e;
-  } finally {
-    await prisma.$disconnect();
-  }
+  const result = await create('user', user);
   return result;
 }
 
