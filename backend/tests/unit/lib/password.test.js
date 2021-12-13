@@ -1,4 +1,4 @@
-const { hashPassword, isValidPassword } = require('../../lib/password');
+const { hashPassword, isValidPassword } = require('../../../lib/password');
 
 describe('hashPassword', () => {
   it('should return a hashed password of a string password input', async () => {

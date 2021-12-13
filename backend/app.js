@@ -15,6 +15,8 @@ app.use('/api/categories', require('./routes/categories'));
 
 // Listen
 const PORT = process.env.PORT || 1337;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`);
 });
+
+module.exports = server;
