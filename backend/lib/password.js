@@ -6,7 +6,7 @@ async function hashPassword(password) {
   return hashed;
 }
 
-async function isValidPassword(password) {
+async function isValidPassword(password, hashed) {
   const isValid = await bcrypt.compare(password, hashed);
   return isValid;
 }

@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
+    "jest": "^27.4.4",
     "nodemon": "^2.0.15",
     "prisma": "^3.6.0"
   }
