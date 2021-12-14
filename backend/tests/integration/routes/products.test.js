@@ -51,6 +51,7 @@ describe('/api/products', () => {
       expect(res.body.length).toBe(2);
     });
   });
+
   describe('POST /', () => {
     afterEach(async () => {
       await prisma.product.deleteMany();
@@ -69,6 +70,12 @@ describe('/api/products', () => {
       const res = await request(app).post('/api/products').send(product);
       expect(res.status).toBe(200);
       expect(res.body.title).toBe('title1');
+    });
+
+    it('should return 400 if req.body does not contain correct data', async () => {
+      const product = {};
+      const res = await request(app).post('/api/products').send(product);
+      expect(res.status).toBe(400);
     });
   });
 });
