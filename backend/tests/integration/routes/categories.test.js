@@ -2,19 +2,20 @@ const request = require('supertest');
 const app = require('../../../app');
 const prisma = require('../../../lib/prisma');
 
-afterAll(async () => {
-  await prisma.category.deleteMany();
-});
-
 describe('/api/categories', () => {
   describe('GET /', () => {
-    it('should return a list of all categories', async () => {
-      // create test data
+    beforeEach(async () => {
       await prisma.category.createMany({
         data: [{ name: 'category1' }, { name: 'category2' }],
       });
+    });
 
-      // test route
+    afterEach(async () => {
+      await prisma.category.deleteMany();
+      await prisma.$disconnect();
+    });
+
+    it('should return a list of all categories', async () => {
       const res = await request(app).get('/api/categories');
 
       expect(res.status).toBe(200);
@@ -23,6 +24,11 @@ describe('/api/categories', () => {
   });
 
   describe('POST /', () => {
+    afterEach(async () => {
+      await prisma.category.deleteMany();
+      await prisma.$disconnect();
+    });
+
     it('should create a new record in the database from req.body', async () => {
       const data = {
         name: 'category1',

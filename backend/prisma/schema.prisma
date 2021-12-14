@@ -39,8 +39,8 @@ model Product {
   price Decimal @db.Decimal(10,2)
   numberInStock Int @default(0)
   orderDetails OrderDetail[]
-  category Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
+  category Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
 }
 
 model Order {

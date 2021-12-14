@@ -12,6 +12,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await prisma.category.deleteMany({});
+  await prisma.$disconnect();
 });
 
 describe('/api/products', () => {
@@ -48,6 +49,26 @@ describe('/api/products', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
+    });
+  });
+  describe('POST /', () => {
+    afterEach(async () => {
+      await prisma.product.deleteMany();
+      await prisma.$disconnect();
+    });
+
+    it('should insert a new record from req.body', async () => {
+      const product = {
+        title: 'title1',
+        description: 'description1',
+        image: 'image1',
+        price: 1.99,
+        numberInStock: 1,
+        categoryId: category.id,
+      };
+      const res = await request(app).post('/api/products').send(product);
+      expect(res.status).toBe(200);
+      expect(res.body.title).toBe('title1');
     });
   });
 });
