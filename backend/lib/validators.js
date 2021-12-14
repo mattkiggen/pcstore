@@ -14,6 +14,7 @@ function validateProduct(product) {
     image: Joi.string().min(3).required(),
     price: Joi.number().required(),
     numberInStock: Joi.number(),
+    categoryId: Joi.number().required(),
   });
   return schema.validate(product);
 }

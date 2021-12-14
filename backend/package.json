@@ -2,9 +2,9 @@
   "name": "pc-ecommerce",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon server.js",
     "test": "dotenv -e .env.test jest --verbose",
     "migrate:testdb": "dotenv -e .env.test -- npx prisma migrate dev --name testdb-init"
   },

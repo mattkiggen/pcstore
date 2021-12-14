@@ -1,48 +1,39 @@
 const request = require('supertest');
-let server;
+const app = require('../../../app');
 const prisma = require('../../../lib/prisma');
 
 describe('/api/products', () => {
-  beforeEach(() => {
-    server = require('../../../app');
-  });
-  afterEach(async () => {
-    server.close();
-    await prisma.product.deleteMany({});
-    await prisma.category.deleteMany({});
-  });
-
   describe('GET /', () => {
     it('should return a list of products', async () => {
-      // add data
       const category = await prisma.category.create({
-        data: { name: 'category1' },
+        data: { name: 'category' },
       });
       await prisma.product.createMany({
         data: [
           {
             title: 'title1',
-            productImage: 'image1',
             description: 'description1',
-            price: 1,
-            productCode: '1234',
+            image: 'image1',
+            price: 1.99,
+            numberInStock: 1,
             categoryId: category.id,
           },
           {
             title: 'title2',
-            productImage: 'image2',
             description: 'description2',
-            price: 1,
-            productCode: '5678',
+            image: 'image2',
+            price: 1.99,
+            numberInStock: 1,
             categoryId: category.id,
           },
         ],
       });
 
-      // test route
-      const res = await request(server).get('/api/products');
+      const res = await request(app).get('/api/products');
+      await prisma.product.deleteMany({});
+      await prisma.category.deleteMany({});
+
       expect(res.status).toBe(200);
-      expect(res.body.length).toBe(2);
     });
   });
 });
