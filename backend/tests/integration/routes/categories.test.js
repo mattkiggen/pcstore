@@ -2,6 +2,10 @@ const request = require('supertest');
 const app = require('../../../app');
 const prisma = require('../../../lib/prisma');
 
+afterAll(async () => {
+  await prisma.category.deleteMany();
+});
+
 describe('/api/categories', () => {
   describe('GET /', () => {
     it('should return a list of all categories', async () => {
@@ -12,7 +16,7 @@ describe('/api/categories', () => {
 
       // test route
       const res = await request(app).get('/api/categories');
-      await prisma.category.deleteMany({});
+
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
     });
@@ -25,7 +29,6 @@ describe('/api/categories', () => {
       };
 
       const res = await request(app).post('/api/categories').send(data);
-      await prisma.category.deleteMany({});
 
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('category1');

@@ -2,12 +2,21 @@ const request = require('supertest');
 const app = require('../../../app');
 const prisma = require('../../../lib/prisma');
 
+let category;
+
+beforeAll(async () => {
+  category = await prisma.category.create({
+    data: { name: 'category' },
+  });
+});
+
+afterAll(async () => {
+  await prisma.category.deleteMany({});
+});
+
 describe('/api/products', () => {
   describe('GET /', () => {
-    it('should return a list of products', async () => {
-      const category = await prisma.category.create({
-        data: { name: 'category' },
-      });
+    beforeEach(async () => {
       await prisma.product.createMany({
         data: [
           {
@@ -28,12 +37,17 @@ describe('/api/products', () => {
           },
         ],
       });
+    });
 
-      const res = await request(app).get('/api/products');
+    afterEach(async () => {
       await prisma.product.deleteMany({});
-      await prisma.category.deleteMany({});
+    });
+
+    it('should return a list of products', async () => {
+      const res = await request(app).get('/api/products');
 
       expect(res.status).toBe(200);
+      expect(res.body.length).toBe(2);
     });
   });
 });
