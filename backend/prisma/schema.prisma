@@ -11,66 +11,51 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  firstName    String   @db.VarChar(50)
-  lastName     String   @db.VarChar(50)
-  email        String   @unique @db.VarChar(255)
-  phoneNumber  String   @db.VarChar(15)
-  password     String   @db.VarChar(2000)
-  streetNumber String   @db.VarChar(10)
-  streetName   String   @db.VarChar(255)
-  province     String   @db.VarChar(50)
-  country      String   @db.VarChar(50)
-  postalCode   String   @db.VarChar(10)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  admin        Admin?
-  orders       Order[]
-}
-
-model Admin {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
-}
-
-model Product {
-  id            Int         @id @default(autoincrement())
-  title         String      @db.VarChar(255)
-  productImage  String      @db.VarChar(500)
-  description   String      @db.VarChar(5000)
-  price         Decimal     @db.Decimal(10, 2)
-  productCode   String      @db.VarChar(255)
-  numberInStock Int         @default(0) @db.Int
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  category      Category    @relation(fields: [categoryId], references: [id])
-  categoryId    Int
-  OrderItem     OrderItem[]
+  id Int @id @default(autoincrement())
+  firstName String @db.VarChar(50)
+  lastName String @db.VarChar(50)
+  email String @db.VarChar(255)
+  phone String? @db.VarChar(15)
+  password String @db.VarChar(2000)
+  streetNumber String? @db.VarChar(10)
+  streetName String? @db.VarChar(255)
+  city String? @db.VarChar(50)
+  postalCode String? @db.VarChar(10)
+  dateRegistered DateTime @default(now())
+  isAdmin Boolean @default(false)
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String    @db.VarChar(50)
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(50)
   products Product[]
 }
 
-model Order {
-  id         Int         @id @default(autoincrement())
-  user       User        @relation(fields: [userId], references: [id])
-  userId     Int
-  orderItems OrderItem[]
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  status     String      @db.VarChar(255)
-  total      Decimal     @db.Decimal(10, 2)
+model Product {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  image String @db.VarChar(500)
+  price Decimal @db.Decimal(10,2)
+  numberInStock Int @default(0)
+  orderDetails OrderDetail[]
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
 }
 
-model OrderItem {
-  id        Int     @id @default(autoincrement())
-  order     Order   @relation(fields: [orderId], references: [id])
-  orderId   Int
-  product   Product @relation(fields: [productId], references: [id])
+model Order {
+  id Int @id @default(autoincrement())
+  datePlaced DateTime @default(now())
+  dateFulfilled DateTime?
+  status String @db.VarChar(255) @default("processing")
+  orderDetails OrderDetail[]
+}
+
+model OrderDetail {
+  id Int @id @default(autoincrement())
+  order Order @relation(fields: [orderId], references: [id])
+  orderId Int
+  product Product @relation(fields: [productId], references: [id])
   productId Int
-  quantity  Int     @default(1)
+  quantity Int @default(1)
 }

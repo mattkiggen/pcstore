@@ -1,10 +1,21 @@
-const { create } = require('../lib/data');
 const Joi = require('joi');
 
-// returns a result object that contains either the new user or an error object
-async function createUser(user) {
-  const result = await create('user', user);
-  return result;
+function validateCategory(category) {
+  const schema = Joi.object({
+    name: Joi.string().min(3).max(50).required(),
+  });
+  return schema.validate(category);
+}
+
+function validateProduct(product) {
+  const schema = Joi.object({
+    title: Joi.string().min(3).required(),
+    description: Joi.string().min(3).required(),
+    image: Joi.string().min(3).required(),
+    price: Joi.number().required(),
+    numberInStock: Joi.number(),
+  });
+  return schema.validate(product);
 }
 
 function validateUser(user) {
@@ -23,4 +34,4 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
-module.exports = { createUser, validateUser };
+module.exports = { validateCategory, validateProduct, validateUser };
