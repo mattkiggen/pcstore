@@ -6,8 +6,14 @@ function createToken(user) {
 }
 
 function decodeToken(token) {
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  return decoded;
+  const data = {};
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    data.decoded = decoded;
+  } catch (err) {
+    data.error = err;
+  }
+  return data;
 }
 
 module.exports = { createToken, decodeToken };

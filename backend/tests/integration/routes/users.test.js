@@ -9,7 +9,7 @@ describe('/api/users', () => {
       await prisma.$disconnect();
     });
 
-    it('should insert a new record from req.body', async () => {
+    it('should insert a new record from req.body and return a valid JWT', async () => {
       const data = {
         firstName: 'name',
         lastName: 'lastname',
@@ -19,7 +19,14 @@ describe('/api/users', () => {
 
       const res = await request(app).post('/api/users').send(data);
       expect(res.status).toBe(200);
-      expect(res.body.firstName).toBe('name');
+      expect(res.body).toHaveProperty('token');
+    });
+
+    it('should return 400 if req.body does not meet validation', async () => {
+      const data = {};
+
+      const res = await request(app).post('/api/users').send(data);
+      expect(res.status).toBe(400);
     });
   });
 });

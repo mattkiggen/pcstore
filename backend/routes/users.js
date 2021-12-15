@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const { validateUser } = require('../lib/validators');
+const { validateUser, validateUserUpdateInfo } = require('../lib/validators');
 const { hashPassword } = require('../lib/password');
 const prisma = require('../lib/prisma');
 const { createToken } = require('../lib/jwt');
+const auth = require('../middleware/auth');
 
 // Add new user, returns JWT token upon successful insertion
 router.post('/', async (req, res) => {
@@ -34,5 +35,22 @@ router.post('/', async (req, res) => {
 });
 
 // Update user details
+router.put('/', auth, async (req, res) => {
+  const { error } = validateUserUpdateInfo(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  id = req.user.id;
+
+  try {
+    await prisma.user.update({
+      where: { id },
+      data: req.body,
+    });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+
+  return res.send('Updated user successfully');
+});
 
 module.exports = router;
