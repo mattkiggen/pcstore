@@ -24,14 +24,14 @@ function validateUser(user) {
     firstName: Joi.string().required().min(3).max(50),
     lastName: Joi.string().required().min(3).max(50),
     email: Joi.string().required().email(),
-    phoneNumber: Joi.string().required(),
+    phone: Joi.string(),
     password: Joi.string().required(),
-    streetNumber: Joi.string().required().min(1).max(10),
-    streetName: Joi.string().required().min(3).max(255),
-    province: Joi.string().required().min(3).max(50),
-    country: Joi.string().required().min(3).max(50),
-    postalCode: Joi.string().required().min(3).max(10),
+    streetNumber: Joi.string().min(1).max(10),
+    streetName: Joi.string().min(3).max(255),
+    city: Joi.string().min(3).max(50),
+    postalCode: Joi.string().min(3).max(10),
   });
+
   return schema.validate(user);
 }
 

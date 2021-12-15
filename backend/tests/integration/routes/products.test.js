@@ -11,7 +11,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await prisma.category.deleteMany({});
+  await prisma.category.deleteMany();
   await prisma.$disconnect();
 });
 
@@ -41,7 +41,7 @@ describe('/api/products', () => {
     });
 
     afterEach(async () => {
-      await prisma.product.deleteMany({});
+      await prisma.product.deleteMany();
     });
 
     it('should return a list of products', async () => {
@@ -55,7 +55,6 @@ describe('/api/products', () => {
   describe('POST /', () => {
     afterEach(async () => {
       await prisma.product.deleteMany();
-      await prisma.$disconnect();
     });
 
     it('should insert a new record from req.body', async () => {
