@@ -11,8 +11,17 @@ router.post('/', async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  // check if user already registered
+  let user = await prisma.user.findUnique({
+    where: {
+      email: req.body.email,
+    },
+  });
+
+  if (user) return res.status(400).json('user already registered');
+
   // Hash password
-  let user = req.body;
+  user = req.body;
   user.password = await hashPassword(user.password);
 
   // Create user record
@@ -51,6 +60,26 @@ router.put('/', auth, async (req, res) => {
   }
 
   return res.send('Updated user successfully');
+});
+
+// Get user details by email
+router.get('/', auth, async (req, res) => {
+  const { email } = req.user;
+  let details;
+  try {
+    details = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+  if (!details) {
+    return res.status(404).json('user not found');
+  }
+
+  res.send(details);
 });
 
 module.exports = router;
