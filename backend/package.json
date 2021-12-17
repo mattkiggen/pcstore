@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "test": "dotenv -e .env.test jest --verbose",
-    "migrate:testdb": "dotenv -e .env.test -- npx prisma migrate dev --name testdb-init"
+    "push:testdb": "dotenv -e .env.test -- npx prisma db push"
   },
   "keywords": [],
   "author": "",
