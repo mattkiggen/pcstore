@@ -27,7 +27,35 @@ router.post('/', async (req, res) => {
     return res.status(500).json(err);
   }
 
-  return res.send(category);
+  res.send(category);
+});
+
+// Update category
+router.put('/:id', async (req, res) => {
+  const { error } = validateCategory(req.body);
+  if (error) return res.status(400).json(error);
+
+  // Check if a category exists with given ID
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) return res.status(400).json('Incorrect id');
+
+  let category = await prisma.category.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!category) return res.status(404).json('Category not found');
+
+  // Update details
+  category = await prisma.category.update({
+    where: {
+      id,
+    },
+    data: req.body,
+  });
+
+  // Return a message saying it was successful
+  res.send('Category updated successfully');
 });
 
 module.exports = router;
