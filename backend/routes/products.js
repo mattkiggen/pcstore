@@ -50,6 +50,7 @@ router.post('/', async (req, res) => {
   return res.send(product);
 });
 
+// Update a product
 router.put('/:id', async (req, res) => {
   const id = parseInt(req.params.id);
   if (isNaN(id)) return res.status(400).json('Incorrect id');
