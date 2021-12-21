@@ -19,6 +19,18 @@ function validateProduct(product) {
   return schema.validate(product);
 }
 
+function validateProductUpdate(product) {
+  const schema = Joi.object({
+    title: Joi.string().min(3),
+    description: Joi.string().min(3),
+    image: Joi.string().min(3),
+    price: Joi.number(),
+    numberInStock: Joi.number(),
+    categoryId: Joi.number(),
+  });
+  return schema.validate(product);
+}
+
 function validateUser(user) {
   const schema = Joi.object({
     firstName: Joi.string().required().min(3).max(50),
@@ -53,4 +65,5 @@ module.exports = {
   validateProduct,
   validateUser,
   validateUserUpdateInfo,
+  validateProductUpdate,
 };

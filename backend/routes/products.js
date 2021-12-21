@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const prisma = require('../lib/prisma');
-const { validateProduct } = require('../lib/validators');
+const { validateProduct, validateProductUpdate } = require('../lib/validators');
 
 // Get all products
 router.get('/', async (req, res) => {
@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
 // Get product by ID
 router.get('/:id', async (req, res) => {
   const id = parseInt(req.params.id);
+  if (isNaN(id)) return res.status(400).json('Incorrect id');
 
   let product;
   try {
@@ -47,6 +48,32 @@ router.post('/', async (req, res) => {
   }
 
   return res.send(product);
+});
+
+router.put('/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) return res.status(400).json('Incorrect id');
+
+  const { error } = validateProductUpdate(req.body);
+  if (error) return res.status(400).json(error.details[0].message);
+
+  // Check for product with given ID
+  let product = await prisma.product.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!product) return res.status(404).json({ error: 'Product not found' });
+
+  // Update product info
+  product = await prisma.product.update({
+    where: {
+      id,
+    },
+    data: req.body,
+  });
+
+  res.send(product);
 });
 
 module.exports = router;
