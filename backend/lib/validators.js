@@ -60,10 +60,19 @@ function validateUserUpdateInfo(user) {
   return schema.validate(user);
 }
 
+function validateUserAuth(user) {
+  const schema = Joi.object({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  });
+  return schema.validate(user);
+}
+
 module.exports = {
   validateCategory,
   validateProduct,
   validateUser,
   validateUserUpdateInfo,
+  validateUserAuth,
   validateProductUpdate,
 };
