@@ -9,7 +9,9 @@ const asyncMiddleware = require('../middleware/asyncMiddleware');
 router.get(
   '/',
   asyncMiddleware(async (req, res) => {
-    let products = await prisma.product.findMany();
+    let products = await prisma.product.findMany({
+      include: { category: true },
+    });
     res.send(products);
   })
 );

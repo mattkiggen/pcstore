@@ -50,8 +50,8 @@ export default function Navbar() {
         </StyledButton>
         <StyledList isOpen={isOpen}>
           {items.map((item) => (
-            <StyledItem>
-              <Link key={item.href} href={item.href}>
+            <StyledItem key={item.name}>
+              <Link href={item.href}>
                 <a>{item.name}</a>
               </Link>
             </StyledItem>
