@@ -68,6 +68,24 @@ function validateUserAuth(user) {
   return schema.validate(user);
 }
 
+function validateOrder(order) {
+  const schema = Joi.array().items(
+    Joi.object({
+      productId: Joi.number().min(1).required(),
+      quantity: Joi.number().min(1).required(),
+    })
+  );
+  return schema.validate(order);
+}
+
+function validateOrderUpdate(update) {
+  const schema = Joi.object({
+    dateFulfilled: Joi.date(),
+    status: Joi.string().min(3),
+  });
+  return schema.validate(update);
+}
+
 module.exports = {
   validateCategory,
   validateProduct,
@@ -75,4 +93,6 @@ module.exports = {
   validateUserUpdateInfo,
   validateUserAuth,
   validateProductUpdate,
+  validateOrder,
+  validateOrderUpdate,
 };

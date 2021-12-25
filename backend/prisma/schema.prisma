@@ -51,6 +51,8 @@ model Order {
   datePlaced DateTime @default(now())
   dateFulfilled DateTime?
   status String @db.VarChar(255) @default("processing")
+  total Decimal @db.Decimal(10,2)
+  hasBeenPaid Boolean @default(false)
   orderDetails OrderDetail[]
 }
 
