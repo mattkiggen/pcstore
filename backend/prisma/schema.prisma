@@ -23,6 +23,7 @@ model User {
   postalCode String? @db.VarChar(10)
   dateRegistered DateTime @default(now())
   isAdmin Boolean @default(false)
+  orders Order[]
 }
 
 model Category {
@@ -45,6 +46,8 @@ model Product {
 
 model Order {
   id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int
   datePlaced DateTime @default(now())
   dateFulfilled DateTime?
   status String @db.VarChar(255) @default("processing")
