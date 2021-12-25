@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const { validateCategory } = require('../lib/validators');
 const prisma = require('../lib/prisma');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 const asyncMiddleware = require('../middleware/asyncMiddleware');
 
 // Get list of categories
@@ -15,6 +17,8 @@ router.get(
 // Create new category
 router.post(
   '/',
+  auth,
+  admin,
   asyncMiddleware(async (req, res) => {
     const { error } = validateCategory(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -28,31 +32,36 @@ router.post(
 );
 
 // Update category
-router.put('/:id', async (req, res) => {
-  const { error } = validateCategory(req.body);
-  if (error) return res.status(400).json(error);
+router.put(
+  '/:id',
+  auth,
+  admin,
+  asyncMiddleware(async (req, res) => {
+    const { error } = validateCategory(req.body);
+    if (error) return res.status(400).json(error);
 
-  // Check if a category exists with given ID
-  const id = parseInt(req.params.id);
-  if (isNaN(id)) return res.status(400).json('Incorrect id');
+    // Check if a category exists with given ID
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json('Incorrect id');
 
-  let category = await prisma.category.findUnique({
-    where: {
-      id,
-    },
-  });
-  if (!category) return res.status(404).json('Category not found');
+    let category = await prisma.category.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!category) return res.status(404).json('Category not found');
 
-  // Update details
-  category = await prisma.category.update({
-    where: {
-      id,
-    },
-    data: req.body,
-  });
+    // Update details
+    category = await prisma.category.update({
+      where: {
+        id,
+      },
+      data: req.body,
+    });
 
-  // Return a message saying it was successful
-  res.send('Category updated successfully');
-});
+    // Return a message saying it was successful
+    res.send('Category updated successfully');
+  })
+);
 
 module.exports = router;
