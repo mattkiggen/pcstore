@@ -6,6 +6,7 @@ const admin = require('../middleware/admin');
 const asyncMiddleware = require('../middleware/asyncMiddleware');
 
 // Get all products
+// Maybe use lodash to select what we want here?
 router.get(
   '/',
   asyncMiddleware(async (req, res) => {
