@@ -28,10 +28,8 @@ router.post(
     const { error } = validateOrder(req.body);
     if (error) return res.status(400).json(error.details[0].message);
 
-    // Get total
-    // What happens if a product is not in stock or there is only 1 and the client requests 2?
-    // Might be a better way to do this...
-    const calculateTotalAndDecrementStock = async () => {
+    // Calculate total price of proudcts in req.body
+    const calculateTotal = async () => {
       let total = 0;
 
       for (let item of req.body) {
@@ -41,27 +39,16 @@ router.post(
           },
         });
         total += item.quantity * p.price;
-
-        await prisma.product.update({
-          where: {
-            id: p.id,
-          },
-          data: {
-            numberInStock: p.numberInStock - item.quantity,
-          },
-        });
       }
 
       return total;
     };
 
-    const total = await calculateTotalAndDecrementStock();
-
     // Insert new order
     const order = await prisma.order.create({
       data: {
         userId: req.user.id,
-        total,
+        total: await calculateTotal(),
         orderDetails: {
           create: req.body,
         },
