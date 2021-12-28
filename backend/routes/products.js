@@ -83,4 +83,31 @@ router.put(
   })
 );
 
+// Delete a product
+router.delete(
+  '/:id',
+  auth,
+  admin,
+  asyncMiddleware(async (req, res) => {
+    const { id } = req.params;
+
+    // Check if product exists
+    let product = await prisma.product.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    if (!product) return res.status(404).json('Product not found');
+
+    // Delete record
+    product = await prisma.product.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    res.send(product);
+  })
+);
+
 module.exports = router;
