@@ -31,7 +31,7 @@ router.post(
   })
 );
 
-// Update category
+// Update a category
 router.put(
   '/:id',
   auth,
@@ -61,6 +61,46 @@ router.put(
 
     // Return a message saying it was successful
     res.send('Category updated successfully');
+  })
+);
+
+// Delete a category
+router.delete(
+  '/:id',
+  auth,
+  admin,
+  asyncMiddleware(async (req, res) => {
+    const id = parseInt(req.params.id);
+
+    // Check for products belonging to category
+    const products = await prisma.product.findMany({
+      where: {
+        categoryId: id,
+      },
+    });
+
+    if (products.length > 0)
+      return res
+        .status(400)
+        .json('Cannot delete category that contains products');
+
+    // Check if category exists
+    let category = await prisma.category.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!category) return res.status(404).json('Category not found');
+
+    // Delete record
+    category = await prisma.category.delete({
+      where: {
+        id,
+      },
+    });
+
+    res.send('Category deleted successfully');
   })
 );
 
