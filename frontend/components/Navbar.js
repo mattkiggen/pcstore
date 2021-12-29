@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import styled from 'styled-components';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,76 +41,22 @@ export default function Navbar() {
   );
 
   return (
-    <StyledHeader>
-      <StyledNav>
+    <header>
+      <nav>
         <div>Logo</div>
-        <StyledButton onClick={() => setIsOpen(!isOpen)}>
+        <button onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? closeIcon : icon}
-        </StyledButton>
-        <StyledList isOpen={isOpen}>
+        </button>
+        <ul>
           {items.map((item) => (
-            <StyledItem key={item.name}>
+            <li key={item.name}>
               <Link href={item.href}>
                 <a>{item.name}</a>
               </Link>
-            </StyledItem>
+            </li>
           ))}
-        </StyledList>
-      </StyledNav>
-    </StyledHeader>
+        </ul>
+      </nav>
+    </header>
   );
 }
-
-const StyledHeader = styled.header`
-  padding: 20px;
-`;
-
-const StyledNav = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-`;
-
-const StyledButton = styled.button`
-  border: 0;
-  background-color: transparent;
-  color: #222;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  @media (min-width: 640px) {
-    display: none;
-  }
-`;
-
-const StyledList = styled.ul`
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
-  flex-direction: column;
-  width: 100%;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
-  @media (min-width: 640px) {
-    display: flex;
-    width: auto;
-    flex-direction: row;
-  }
-`;
-
-const StyledItem = styled.li`
-  margin-top: 20px;
-  :first-child {
-    margin-top: 40px;
-  }
-
-  @media (min-width: 640px) {
-    margin-top: 0;
-    :first-child {
-      margin-top: 0;
-    }
-    margin-left: 20px;
-  }
-`;

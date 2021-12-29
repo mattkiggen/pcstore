@@ -1,11 +1,10 @@
-import styled from 'styled-components';
 import ProductCard from './ProductCard';
 
 export default function ProductList({ products }) {
   return (
     <div>
       <h2>Products</h2>
-      <StyledDiv>
+      <div>
         {products.map((p) => (
           <ProductCard
             title={p.title}
@@ -14,13 +13,7 @@ export default function ProductList({ products }) {
             category={p.category.name}
           />
         ))}
-      </StyledDiv>
+      </div>
     </div>
   );
 }
-
-const StyledDiv = styled.div`
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
-`;
