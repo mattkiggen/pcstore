@@ -42,13 +42,13 @@ export default function LoginPage() {
             label='Email:'
             type='text'
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value.trim())}
           />
           <FormInput
             label='Password:'
             type='password'
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value.trim())}
           />
           <Button text='Login' />
         </form>
