@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar';
+import Navbar from '../../components/Navbar';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 const axios = require('axios').default;
@@ -17,6 +17,7 @@ export default function Dashboard() {
           'x-auth-token': token,
         },
       });
+
       setUser(res.data);
       console.log(res.data);
     };
