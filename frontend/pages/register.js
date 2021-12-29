@@ -1,8 +1,10 @@
+const axios = require('axios').default;
 import FormInput from '../components/FormInput';
 import Navbar from '../components/Navbar';
 import { useState } from 'react';
 import Button from '../components/Button';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
   const [firstName, setFirstName] = useState('');
@@ -11,8 +13,23 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const data = {
+        firstName,
+        lastName,
+        email,
+        password,
+      };
+      const res = await axios.post(`${process.env.API_URL}/api/users`, data);
+      const { token } = res.data;
+
+      console.log(token);
+      toast.success('Account created');
+    } catch (err) {
+      toast.error('Error creating new account');
+    }
   };
 
   return (
@@ -24,31 +41,31 @@ export default function RegisterPage() {
           label='First Name:'
           type='text'
           value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          onChange={(e) => setFirstName(e.target.value.trim())}
         />
         <FormInput
           label='Last Name:'
           type='text'
           value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          onChange={(e) => setLastName(e.target.value.trim())}
         />
         <FormInput
           label='Email:'
           type='text'
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value.trim())}
         />
         <FormInput
           label='Password:'
           type='password'
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value.trim())}
         />
         <FormInput
           label='Confirm Password:'
           type='password'
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={(e) => setConfirmPassword(e.target.value.trim())}
         />
         <Button text='Register' />
         <p>
