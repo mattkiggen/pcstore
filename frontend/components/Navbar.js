@@ -8,6 +8,7 @@ export default function Navbar() {
     { href: '/', name: 'Home' },
     { href: '/login', name: 'Login' },
     { href: '/register', name: 'Register' },
+    { href: '/dashboard', name: 'Dashboard' },
   ];
 
   const listCss = `w-full ${
