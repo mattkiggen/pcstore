@@ -1,10 +1,12 @@
 const axios = require('axios').default;
 import FormInput from '../components/FormInput';
 import Navbar from '../components/Navbar';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '../components/Button';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
+import AuthContext from '../context/AuthContext';
 
 export default function RegisterPage() {
   const [firstName, setFirstName] = useState('');
@@ -12,6 +14,15 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const router = useRouter();
+  const authToken = useContext(AuthContext);
+
+  // Check if user is logged in
+  useEffect(() => {
+    if (authToken) {
+      router.push('/dashboard');
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

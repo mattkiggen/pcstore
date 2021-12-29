@@ -1,15 +1,16 @@
 import Navbar from '../../components/Navbar';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 const axios = require('axios').default;
+import AuthContext from '../../context/AuthContext';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const router = useRouter();
+  const token = useContext(AuthContext);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      const token = localStorage.getItem('x-auth-token');
       if (!token) return router.push('/login');
 
       const res = await axios.get(`${process.env.API_URL}/api/users`, {

@@ -1,8 +1,8 @@
+const axios = require('axios').default;
 import Head from 'next/head';
 import Hero from '../components/Hero';
 import Navbar from '../components/Navbar';
 import ProductList from '../components/ProductList';
-const axios = require('axios').default;
 
 export default function Home({ products }) {
   return (
