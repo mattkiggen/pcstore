@@ -6,9 +6,13 @@ export default function Navbar() {
 
   const items = [
     { href: '/', name: 'Home' },
-    { href: '/', name: 'About' },
-    { href: '/', name: 'Contact' },
+    { href: '/login', name: 'Login' },
+    { href: '/register', name: 'Register' },
   ];
+
+  const listCss = `w-full ${
+    isOpen ? 'block' : 'hidden'
+  } mt-6 sm:flex sm:w-auto sm:mt-0`;
 
   const icon = (
     <svg
@@ -41,17 +45,17 @@ export default function Navbar() {
   );
 
   return (
-    <header>
-      <nav>
+    <header className='p-4 bg-gray-800 text-white'>
+      <nav className='flex flex-wrap justify-between'>
         <div>Logo</div>
-        <button onClick={() => setIsOpen(!isOpen)}>
+        <button onClick={() => setIsOpen(!isOpen)} className='sm:hidden'>
           {isOpen ? closeIcon : icon}
         </button>
-        <ul>
+        <ul className={listCss}>
           {items.map((item) => (
-            <li key={item.name}>
+            <li key={item.name} className='my-2 last:my-0 sm:my-0 sm:ml-4'>
               <Link href={item.href}>
-                <a>{item.name}</a>
+                <a className='hover:underline'>{item.name}</a>
               </Link>
             </li>
           ))}
