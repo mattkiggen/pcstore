@@ -3,9 +3,11 @@ const express = require('express');
 const app = express();
 const helmet = require('helmet');
 const error = require('./middleware/error');
+const cors = require('cors');
 
 // Middleware
 app.use(helmet());
+app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 

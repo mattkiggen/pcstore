@@ -45,8 +45,8 @@ export default function Navbar() {
   );
 
   return (
-    <header className='p-4 bg-gray-800 text-white'>
-      <nav className='flex flex-wrap justify-between'>
+    <header className='p-6 bg-gray-800 text-white'>
+      <nav className='flex flex-wrap justify-between container mx-auto'>
         <div>Logo</div>
         <button onClick={() => setIsOpen(!isOpen)} className='sm:hidden'>
           {isOpen ? closeIcon : icon}
