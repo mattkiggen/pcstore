@@ -1,12 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import FormattedPrice from './FormattedPrice';
 
 export default function ProductCard({ title, image, price, id }) {
-  price = new Intl.NumberFormat('en-ZA', {
-    style: 'currency',
-    currency: 'ZAR',
-  }).format(price);
-
   return (
     <article className='border border-gray-200 flex flex-col justify-center items-center p-6 rounded'>
       <Link href={`/product/${id}`}>
@@ -15,7 +11,9 @@ export default function ProductCard({ title, image, price, id }) {
         </a>
       </Link>
       <Image src={`${image}`} width={200} height={200} objectFit='contain' />
-      <p className='text-2xl font-bold mb-6'>{price}</p>
+      <p className='text-2xl font-bold mb-6'>
+        <FormattedPrice price={price} />
+      </p>
       <button className='bg-yellow-300 w-full p-2 rounded'>Buy Now</button>
     </article>
   );
