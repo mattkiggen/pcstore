@@ -11,6 +11,7 @@ export default function ProductCard({ title, image, price, id }) {
     const product = { id, title, image, price, quantity: 1 };
 
     setCartItems((previousItems) => {
+      // TODO: Need to check if product already in items, then increase quantity instead
       return [...previousItems, product];
     });
   };
