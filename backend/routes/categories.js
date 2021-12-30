@@ -104,4 +104,21 @@ router.delete(
   })
 );
 
+// Get category by ID and their posts
+router.get(
+  '/:id',
+  asyncMiddleware(async (req, res) => {
+    const id = parseInt(req.params.id);
+    const data = await prisma.category.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        products: true,
+      },
+    });
+    res.send(data);
+  })
+);
+
 module.exports = router;
