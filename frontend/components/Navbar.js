@@ -20,56 +20,60 @@ export default function Navbar() {
     isOpen ? 'block' : 'hidden'
   } mt-6 sm:flex sm:w-auto sm:mt-0`;
 
-  const itemCss = 'my-2 last:my-0 sm:my-0 sm:ml-4';
-
   return (
     <header className='p-6 bg-gray-800 text-white'>
       <nav className='flex flex-wrap justify-between container mx-auto'>
         <div>Logo</div>
         <div className='flex justify-center items-center'>
+          {/* Mobile shopping cart icon */}
           <ShoppingCartIcon
             numOfItems={cartItems.length}
             spanCss='inline-block sm:hidden mr-6'
           />
+
           <button onClick={() => setIsOpen(!isOpen)} className='sm:hidden'>
             Menu
           </button>
         </div>
         <ul className={listCss}>
-          <li className={itemCss}>
+          <li className='my-2 sm:my-0 sm:ml-4'>
             <Link href='/'>
               <a className='hover:underline'>Home</a>
             </Link>
           </li>
+
+          {/* Render items based on whether a user is logged in */}
           {cookie['x-auth-token'] === undefined && (
-            <li className={itemCss}>
+            <li className='my-2 sm:my-0 sm:ml-4'>
               <Link href='/login'>
                 <a className='hover:underline'>Login</a>
               </Link>
             </li>
           )}
           {cookie['x-auth-token'] === undefined && (
-            <li className={itemCss}>
+            <li className='mt-2 sm:mt-0 sm:ml-4'>
               <Link href='/register'>
                 <a className='hover:underline'>Register</a>
               </Link>
             </li>
           )}
           {cookie['x-auth-token'] !== undefined && (
-            <li className={itemCss}>
+            <li className='my-2 sm:my-0 sm:ml-4'>
               <Link href='/dashboard'>
                 <a className='hover:underline'>Dashboard</a>
               </Link>
             </li>
           )}
           {cookie['x-auth-token'] !== undefined && (
-            <li className={itemCss}>
+            <li className='mt-2 sm:mt-0 sm:ml-4'>
               <button className='hover:underline' onClick={handleLogout}>
                 Logout
               </button>
             </li>
           )}
-          <li className={itemCss}>
+
+          {/* Desktop shopping cart icon */}
+          <li className='sm:my-0 sm:ml-4'>
             <ShoppingCartIcon
               numOfItems={cartItems.length}
               spanCss='hidden sm:block'
