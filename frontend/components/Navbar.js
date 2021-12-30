@@ -1,21 +1,26 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/router';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [cookie, setCookie, removeCookie] = useCookies(['x-auth-token']);
+  const router = useRouter();
 
-  const items = [
-    { href: '/', name: 'Home' },
-    { href: '/login', name: 'Login' },
-    { href: '/register', name: 'Register' },
-    { href: '/dashboard', name: 'Dashboard' },
-    { href: '/logout', name: 'Logout' },
-  ];
+  console.log(cookie['x-auth-token']);
 
-  // Create css based on menu state
+  const handleLogout = (e) => {
+    removeCookie(['x-auth-token']);
+    router.push('/');
+  };
+
+  // Create css
   const listCss = `w-full ${
     isOpen ? 'block' : 'hidden'
   } mt-6 sm:flex sm:w-auto sm:mt-0`;
+
+  const itemCss = 'my-2 last:my-0 sm:my-0 sm:ml-4';
 
   // Open and close icons
   const icon = (
@@ -56,13 +61,39 @@ export default function Navbar() {
           {isOpen ? closeIcon : icon}
         </button>
         <ul className={listCss}>
-          {items.map((item) => (
-            <li key={item.name} className='my-2 last:my-0 sm:my-0 sm:ml-4'>
-              <Link href={item.href}>
-                <a className='hover:underline'>{item.name}</a>
+          <li className={itemCss}>
+            <Link href='/'>
+              <a className='hover:underline'>Home</a>
+            </Link>
+          </li>
+          {cookie['x-auth-token'] === undefined && (
+            <li className={itemCss}>
+              <Link href='/login'>
+                <a className='hover:underline'>Login</a>
               </Link>
             </li>
-          ))}
+          )}
+          {cookie['x-auth-token'] === undefined && (
+            <li className={itemCss}>
+              <Link href='/register'>
+                <a className='hover:underline'>Register</a>
+              </Link>
+            </li>
+          )}
+          {cookie['x-auth-token'] !== undefined && (
+            <li className={itemCss}>
+              <Link href='/dashboard'>
+                <a className='hover:underline'>Dashboard</a>
+              </Link>
+            </li>
+          )}
+          {cookie['x-auth-token'] !== undefined && (
+            <li className={itemCss}>
+              <button className='hover:underline' onClick={handleLogout}>
+                Logout
+              </button>
+            </li>
+          )}
         </ul>
       </nav>
     </header>
