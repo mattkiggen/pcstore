@@ -5,6 +5,7 @@ const prisma = require('../lib/prisma');
 const { createToken } = require('../lib/jwt');
 const auth = require('../middleware/auth');
 const asyncMiddleware = require('../middleware/asyncMiddleware');
+const _ = require('lodash');
 
 // Add new user, returns JWT token upon successful insertion
 router.post(
@@ -62,7 +63,7 @@ router.put(
   })
 );
 
-// Get user details by email
+// Get user details by email (could use ID too)
 router.get(
   '/',
   auth,
@@ -72,13 +73,25 @@ router.get(
       where: {
         email: email,
       },
+      include: {
+        orders: true,
+      },
     });
 
     if (!details) {
       return res.status(404).json('user not found');
     }
 
-    res.send(details);
+    res.send(
+      _.pick(details, [
+        'id',
+        'firstName',
+        'lastName',
+        'email',
+        'isAdmin',
+        'orders',
+      ])
+    );
   })
 );
 
