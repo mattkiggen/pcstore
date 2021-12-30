@@ -1,27 +1,16 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import AuthContext from '../context/AuthContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const token = useContext(AuthContext);
 
-  // Create menu items based on logged in state
-  const defaultItems = [{ href: '/', name: 'Home' }];
-
-  const loggedInItems = [
+  const items = [
+    { href: '/', name: 'Home' },
+    { href: '/login', name: 'Login' },
+    { href: '/register', name: 'Register' },
     { href: '/dashboard', name: 'Dashboard' },
     { href: '/logout', name: 'Logout' },
   ];
-
-  const loggedOutItems = [
-    { href: '/login', name: 'Login' },
-    { href: '/register', name: 'Register' },
-  ];
-
-  const menuItems = token
-    ? [...defaultItems, ...loggedInItems]
-    : [...defaultItems, ...loggedOutItems];
 
   // Create css based on menu state
   const listCss = `w-full ${
@@ -67,7 +56,7 @@ export default function Navbar() {
           {isOpen ? closeIcon : icon}
         </button>
         <ul className={listCss}>
-          {menuItems.map((item) => (
+          {items.map((item) => (
             <li key={item.name} className='my-2 last:my-0 sm:my-0 sm:ml-4'>
               <Link href={item.href}>
                 <a className='hover:underline'>{item.name}</a>
