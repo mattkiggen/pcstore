@@ -23,6 +23,6 @@ export async function getServerSideProps(context) {
   console.log(res.data);
 
   return {
-    props: { products: res.data }, // will be passed to the page component as props
+    props: { products: res.data },
   };
 }

@@ -1,30 +1,8 @@
 import Navbar from '../../components/Navbar';
-import { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 const axios = require('axios').default;
-import AuthContext from '../../context/AuthContext';
+import parseCookies from '../../helpers/parseCookies';
 
-export default function Dashboard() {
-  const [user, setUser] = useState(null);
-  const router = useRouter();
-  const token = useContext(AuthContext);
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      if (!token) return router.push('/login');
-
-      const res = await axios.get(`${process.env.API_URL}/api/users`, {
-        headers: {
-          'x-auth-token': token,
-        },
-      });
-
-      setUser(res.data);
-      console.log(res.data);
-    };
-    fetchUserDetails();
-  }, []);
-
+export default function Dashboard({ user }) {
   return (
     <>
       <Navbar />
@@ -36,4 +14,28 @@ export default function Dashboard() {
       )}
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const cookie = parseCookies(context.req);
+  if (!cookie['x-auth-token'])
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+    };
+
+  const headers = {
+    'x-auth-token': cookie['x-auth-token'],
+  };
+  const res = await axios.get(`${process.env.API_URL}/api/users`, {
+    headers,
+  });
+
+  console.log(res.data);
+
+  return {
+    props: { user: res.data },
+  };
 }

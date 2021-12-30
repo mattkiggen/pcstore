@@ -1,12 +1,12 @@
 const axios = require('axios').default;
 import FormInput from '../components/FormInput';
 import Navbar from '../components/Navbar';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import Button from '../components/Button';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
-import AuthContext from '../context/AuthContext';
 
 export default function RegisterPage() {
   const [firstName, setFirstName] = useState('');
@@ -14,15 +14,8 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [cookie, setCookie] = useCookies(['x-auth-token']);
   const router = useRouter();
-  const authToken = useContext(AuthContext);
-
-  // Check if user is logged in
-  useEffect(() => {
-    if (authToken) {
-      router.push('/dashboard');
-    }
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,11 +26,18 @@ export default function RegisterPage() {
         email,
         password,
       };
-      const res = await axios.post(`${process.env.API_URL}/api/users`, data);
-      const { token } = res.data;
 
-      console.log(token);
+      const res = await axios.post(`${process.env.API_URL}/api/users`, data);
+      setCookie('x-auth-token', res.data.token, {
+        path: '/',
+        maxAge: 3600, // Expires after 1hr
+        sameSite: true,
+      });
+
       toast.success('Account created');
+      setTimeout(() => {
+        return router.push('/dashboard');
+      }, 2000);
     } catch (err) {
       toast.error('Error creating new account');
     }
