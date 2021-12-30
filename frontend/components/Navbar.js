@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Link from 'next/link';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
+import ShoppingCartContext from '../context/ShoppingCartContext';
+import ShoppingCartIcon from './ShoppingCartIcon';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [cookie, setCookie, removeCookie] = useCookies(['x-auth-token']);
   const router = useRouter();
-
-  console.log(cookie['x-auth-token']);
+  const { cartItems, setCartItems } = useContext(ShoppingCartContext);
 
   const handleLogout = (e) => {
     removeCookie(['x-auth-token']);
@@ -22,44 +23,19 @@ export default function Navbar() {
 
   const itemCss = 'my-2 last:my-0 sm:my-0 sm:ml-4';
 
-  // Open and close icons
-  const icon = (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      className='h-5 w-5'
-      viewBox='0 0 20 20'
-      fill='currentColor'
-      width={20}>
-      <path
-        fillRule='evenodd'
-        d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z'
-        clipRule='evenodd'
-      />
-    </svg>
-  );
-
-  const closeIcon = (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      className='h-5 w-5'
-      viewBox='0 0 20 20'
-      fill='currentColor'
-      width={20}>
-      <path
-        fillRule='evenodd'
-        d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-        clipRule='evenodd'
-      />
-    </svg>
-  );
-
   return (
     <header className='p-6 bg-gray-800 text-white'>
       <nav className='flex flex-wrap justify-between container mx-auto'>
         <div>Logo</div>
-        <button onClick={() => setIsOpen(!isOpen)} className='sm:hidden'>
-          {isOpen ? closeIcon : icon}
-        </button>
+        <div className='flex justify-center items-center'>
+          <ShoppingCartIcon
+            numOfItems={cartItems.length}
+            additionalSpanCss='sm:hidden mr-6'
+          />
+          <button onClick={() => setIsOpen(!isOpen)} className='sm:hidden'>
+            Menu
+          </button>
+        </div>
         <ul className={listCss}>
           <li className={itemCss}>
             <Link href='/'>
@@ -94,6 +70,12 @@ export default function Navbar() {
               </button>
             </li>
           )}
+          <li className={itemCss}>
+            <ShoppingCartIcon
+              numOfItems={cartItems.length}
+              additionalSpanCss='hidden sm:block'
+            />
+          </li>
         </ul>
       </nav>
     </header>
