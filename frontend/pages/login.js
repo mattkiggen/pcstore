@@ -23,7 +23,6 @@ export default function LoginPage() {
       });
 
       if (res.status === 200) {
-        // TODO: How do I make this httpOnly?
         setCookie('x-auth-token', res.data.token, {
           path: '/',
           maxAge: 3600, // Expires after 1hr
