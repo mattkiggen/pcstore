@@ -16,7 +16,6 @@ export default function Navbar() {
     router.push('/');
   };
 
-  // Create css
   const listCss = `w-full ${
     isOpen ? 'block' : 'hidden'
   } mt-6 sm:flex sm:w-auto sm:mt-0`;
@@ -30,7 +29,7 @@ export default function Navbar() {
         <div className='flex justify-center items-center'>
           <ShoppingCartIcon
             numOfItems={cartItems.length}
-            additionalSpanCss='sm:hidden mr-6'
+            spanCss='inline-block sm:hidden mr-6'
           />
           <button onClick={() => setIsOpen(!isOpen)} className='sm:hidden'>
             Menu
@@ -73,7 +72,7 @@ export default function Navbar() {
           <li className={itemCss}>
             <ShoppingCartIcon
               numOfItems={cartItems.length}
-              additionalSpanCss='hidden sm:block'
+              spanCss='hidden sm:block'
             />
           </li>
         </ul>

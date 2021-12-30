@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-export default function ShoppingCartIcon({ numOfItems, additionalSpanCss }) {
+export default function ShoppingCartIcon({ numOfItems, spanCss }) {
   return (
     <>
-      <span class={`relative inline-block ${additionalSpanCss}`}>
+      <span class={`relative ${spanCss}`}>
         <Link href='/cart'>
           <a>
             <svg
@@ -28,3 +28,8 @@ export default function ShoppingCartIcon({ numOfItems, additionalSpanCss }) {
     </>
   );
 }
+
+ShoppingCartIcon.defaultProps = {
+  numOfItems: 0,
+  spanCss: 'inline-block',
+};
