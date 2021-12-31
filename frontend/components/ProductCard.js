@@ -3,35 +3,39 @@ import Link from 'next/link';
 import { useContext } from 'react';
 import FormattedPrice from './FormattedPrice';
 import ShoppingCartContext from '../context/ShoppingCartContext';
+import Button from './Button';
 
-export default function ProductCard({ title, image, price, id }) {
+export default function ProductCard({ product }) {
   const { setCartItems } = useContext(ShoppingCartContext);
 
   const handleBuyNow = () => {
-    const product = { id, title, image, price, quantity: 1 };
-
     setCartItems((previousItems) => {
       // TODO: Need to check if product already in items, then increase quantity instead
-      return [...previousItems, product];
+      return [...previousItems, { ...product, quantity: 1 }];
     });
   };
 
   return (
     <article className='border border-gray-200 flex flex-col justify-center items-center p-6 rounded'>
-      <Link href={`/product/${id}`}>
+      <Link href={`/product/${product.id}`}>
         <a>
-          <h3 className='text-xl mb-3 hover:underline'>{title}</h3>
+          <h3 className='text-xl mb-3 hover:underline'>{product.title}</h3>
         </a>
       </Link>
-      <Image src={`${image}`} width={200} height={200} objectFit='contain' />
+      <Image
+        src={`${product.image}`}
+        width={200}
+        height={200}
+        objectFit='contain'
+      />
       <p className='text-2xl font-bold mb-6'>
-        <FormattedPrice price={price} />
+        <FormattedPrice price={product.price} />
       </p>
-      <button
+      <Button
+        text='Add to cart'
         className='bg-yellow-300 w-full p-2 rounded'
-        onClick={handleBuyNow}>
-        Add to cart
-      </button>
+        onClick={handleBuyNow}
+      />
     </article>
   );
 }

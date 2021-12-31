@@ -1,12 +1,14 @@
 const axios = require('axios').default;
 import FormInput from '../components/FormInput';
-import Navbar from '../components/Navbar';
 import { useState } from 'react';
 import Button from '../components/Button';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
+import Heading from '../components/Heading';
+import Layout from '../components/Layout';
+import Container from '../components/Container';
 
 export default function RegisterPage() {
   const [firstName, setFirstName] = useState('');
@@ -44,48 +46,49 @@ export default function RegisterPage() {
   };
 
   return (
-    <>
-      <Navbar />
-      <h1>Create New Account</h1>
-      <form onSubmit={handleSubmit}>
-        <FormInput
-          label='First Name:'
-          type='text'
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value.trim())}
-        />
-        <FormInput
-          label='Last Name:'
-          type='text'
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value.trim())}
-        />
-        <FormInput
-          label='Email:'
-          type='text'
-          value={email}
-          onChange={(e) => setEmail(e.target.value.trim())}
-        />
-        <FormInput
-          label='Password:'
-          type='password'
-          value={password}
-          onChange={(e) => setPassword(e.target.value.trim())}
-        />
-        <FormInput
-          label='Confirm Password:'
-          type='password'
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value.trim())}
-        />
-        <Button text='Register' />
-        <p>
-          Already have an account?{' '}
-          <Link href='/login'>
-            <a className='underline'>Login</a>
-          </Link>
-        </p>
-      </form>
-    </>
+    <Layout>
+      <Container>
+        <Heading text='Create New Account' />
+        <form onSubmit={handleSubmit}>
+          <FormInput
+            label='First Name:'
+            type='text'
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value.trim())}
+          />
+          <FormInput
+            label='Last Name:'
+            type='text'
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value.trim())}
+          />
+          <FormInput
+            label='Email:'
+            type='text'
+            value={email}
+            onChange={(e) => setEmail(e.target.value.trim())}
+          />
+          <FormInput
+            label='Password:'
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value.trim())}
+          />
+          <FormInput
+            label='Confirm Password:'
+            type='password'
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value.trim())}
+          />
+          <Button text='Register' />
+          <p>
+            Already have an account?{' '}
+            <Link href='/login'>
+              <a className='underline'>Login</a>
+            </Link>
+          </p>
+        </form>
+      </Container>
+    </Layout>
   );
 }

@@ -1,11 +1,13 @@
 const axios = require('axios').default;
-import Navbar from '../components/Navbar';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import FormInput from '../components/FormInput';
 import Button from '../components/Button';
+import Container from '../components/Container';
+import Heading from '../components/Heading';
+import Layout from '../components/Layout';
 import { useCookies } from 'react-cookie';
 
 export default function LoginPage() {
@@ -40,10 +42,9 @@ export default function LoginPage() {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className='container mx-auto p-6'>
-        <h1 className='text-3xl mb-6'>Login to Your Account</h1>
+    <Layout>
+      <Container>
+        <Heading text='Login to Your Account' />
         <form onSubmit={handleSubmit}>
           <FormInput
             label='Email:'
@@ -65,7 +66,7 @@ export default function LoginPage() {
             <a className='underline'>Register</a>
           </Link>
         </p>
-      </div>
-    </>
+      </Container>
+    </Layout>
   );
 }

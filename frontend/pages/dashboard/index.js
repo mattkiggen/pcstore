@@ -1,18 +1,21 @@
-import Navbar from '../../components/Navbar';
+import Heading from '../../components/Heading';
+import Layout from '../../components/Layout';
+import Container from '../../components/Container';
 const axios = require('axios').default;
 import parseCookies from '../../helpers/parseCookies';
 
 export default function Dashboard({ user }) {
   return (
-    <>
-      <Navbar />
-      {user && (
-        <div>
-          <h1>Hey, {user.firstName}</h1>
-          {user.isAdmin && <p>You are an admin!</p>}
-        </div>
-      )}
-    </>
+    <Layout>
+      <Container>
+        {user && (
+          <div>
+            <Heading text={`Hey, ${user.firstName}`} />
+            {user.isAdmin && <p>You are an admin!</p>}
+          </div>
+        )}
+      </Container>
+    </Layout>
   );
 }
 

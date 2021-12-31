@@ -1,20 +1,22 @@
 const axios = require('axios').default;
 import Head from 'next/head';
+import Container from '../components/Container';
 import Hero from '../components/Hero';
-import Navbar from '../components/Navbar';
+import Layout from '../components/Layout';
 import ProductList from '../components/ProductList';
 
 export default function Home({ products }) {
   return (
-    <>
+    <Layout>
       <Head>
         <link rel='icon' href='/favicon.ico' />
         <title>Buy PC Parts Online in South Africa</title>
       </Head>
-      <Navbar />
       <Hero />
-      <ProductList products={products} />
-    </>
+      <Container>
+        <ProductList products={products} />
+      </Container>
+    </Layout>
   );
 }
 
